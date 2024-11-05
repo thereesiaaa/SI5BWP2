@@ -1,5 +1,6 @@
 const User = require("../model/user");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const signUp= (req, res)=>{
 
@@ -43,6 +44,26 @@ const login = (req, res)=>{
         fetchedUser= user;
 
         return bcrypt.compare(req.body.password, user.password);
+    })
+    .then((result)=>{
+        if(!result){
+            return res.status(401).json({              
+                message : "Auth failed, password false !",
+            });
+        }
+        //JWT
+        const token=jwt.sign(
+            {email : fetchedUser.email, userid : fetchedUser._id}, 
+            "kuncisi5bpaw", 
+            { expiresIn : "1h"}
+        );
+
+        return res.status(200).json({ token : token });
+    }).catch((err)=>{
+        console.log(err);
+        return res.status(401).json({
+            message : "Auth Failed !"
+        })
     });
 }
 
