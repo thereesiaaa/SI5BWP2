@@ -19,10 +19,12 @@ import { FormsModule } from '@angular/forms';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    
   ],
   providers: [
-    provideClientHydration()
+    provideClientHydration(),
+
   ],
   bootstrap: [AppComponent]
 })
